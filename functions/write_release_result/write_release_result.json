@@ -1,0 +1,11 @@
+{
+  "name": "write_release_result",
+  "description": "Writes the release agent's risk assessment, test plan, and release notes back to the prs table.",
+  "type": "API",
+  "visibility": "POD",
+  "code": { "$file": "code.py" },
+  "permissions": { "grants": [
+    { "resource_type": "datastore_table", "resource_name": "prs",
+      "permission_ids": ["datastore.table.read", "datastore.record.read", "datastore.record.write"] }
+  ] }
+}

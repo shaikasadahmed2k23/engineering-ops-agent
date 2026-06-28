@@ -1,0 +1,22 @@
+{
+  // Folder name must equal "name". Import validates the match.
+  "name": "issues",
+  "primary_key_column": "id",   // an auto UUID "id" is added; never declare id/created_at/updated_at/user_id
+  "enable_rls": false,          // shared team data — everyone/every agent sees all issues
+  "visibility": "POD",          // one of: PERSONAL | POD | PUBLIC | RESTRICTED
+  "columns": [
+    { "name": "source", "type": "ENUM", "required": true, "default": "github",
+      "options": ["github", "slack", "email", "support"] },
+    { "name": "title", "type": "TEXT", "required": true, "max_length": 240 },
+    { "name": "description", "type": "TEXT", "required": false },
+    { "name": "severity", "type": "ENUM", "required": true, "default": "medium",
+      "options": ["low", "medium", "high", "critical"] },
+    { "name": "status", "type": "ENUM", "required": true, "default": "new",
+      "options": ["new", "triaged", "in_progress", "fixed", "released", "duplicate"] },
+    { "name": "priority", "type": "INTEGER", "required": false },
+    { "name": "repro_steps", "type": "TEXT", "required": false },
+    { "name": "duplicate_of_id", "type": "UUID", "required": false,
+      "foreign_key": { "references": "issues.id" } }
+  ],
+  "config": {}
+}

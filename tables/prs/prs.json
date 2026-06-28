@@ -1,0 +1,22 @@
+{
+  "name": "prs",
+  "primary_key_column": "id",
+  "enable_rls": false,
+  "visibility": "POD",
+  "columns": [
+    { "name": "repo", "type": "TEXT", "required": true, "max_length": 200 },
+    { "name": "pr_number", "type": "INTEGER", "required": true },
+    { "name": "title", "type": "TEXT", "required": true, "max_length": 240 },
+    { "name": "diff_summary", "type": "TEXT", "required": false },
+    { "name": "status", "type": "ENUM", "required": true, "default": "new",
+      "options": ["new", "reviewed", "ready", "blocked", "released"] },
+    { "name": "risk_level", "type": "ENUM", "required": false, "default": "low",
+      "options": ["low", "medium", "high"] },
+    { "name": "risk_flags", "type": "TEXT", "required": false },
+    { "name": "test_plan", "type": "TEXT", "required": false },
+    { "name": "release_notes_draft", "type": "TEXT", "required": false },
+    { "name": "related_issue_id", "type": "UUID", "required": false,
+      "foreign_key": { "references": "issues.id" } }
+  ],
+  "config": {}
+}

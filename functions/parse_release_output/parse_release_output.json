@@ -1,0 +1,8 @@
+{
+  "name": "parse_release_output",
+  "description": "Parses the release agent's raw JSON-string reply into structured fields for the write step.",
+  "type": "API",
+  "visibility": "POD",
+  "code": { "$file": "code.py" },
+  "permissions": { "grants": [] }
+}

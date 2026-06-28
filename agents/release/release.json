@@ -1,0 +1,8 @@
+{
+  "name": "release",
+  "description": "Reasons about a single PR's release readiness and returns a structured JSON decision. Does not write to any table directly.",
+  "instruction": { "$file": "instruction.md" },
+  "toolsets": ["POD"],
+  "visibility": "POD",
+  "permissions": { "grants": [] }
+}

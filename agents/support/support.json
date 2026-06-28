@@ -1,0 +1,8 @@
+{
+  "name": "support",
+  "description": "Reasons about a single customer support ticket and returns a structured JSON decision: draft a reply, or escalate. Does not write to any table directly.",
+  "instruction": { "$file": "instruction.md" },
+  "toolsets": ["POD"],
+  "visibility": "POD",
+  "permissions": { "grants": [] }
+}

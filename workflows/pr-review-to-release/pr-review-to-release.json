@@ -1,0 +1,44 @@
+{
+  "name": "pr-review-to-release",
+  "description": "On a PR, runs the release agent to assess risk and readiness, parses its JSON answer, then writes the result back to the prs table.",
+  "start": { "type": "MANUAL" },
+  "nodes": [
+    { "id": "intake", "type": "FORM", "label": "Intake",
+      "config": { "input_schema": {
+        "type": "object",
+        "properties": {
+          "record_id": { "type": "string" },
+          "title": { "type": "string" },
+          "diff_summary": { "type": "string" }
+        },
+        "required": ["record_id", "title", "diff_summary"] } } },
+    { "id": "release_step", "type": "AGENT", "label": "Release Review",
+      "config": { "agent_name": "release",
+        "input_mapping": {
+          "title": { "type": "expression", "value": "intake.title" },
+          "diff_summary": { "type": "expression", "value": "intake.diff_summary" }
+        } } },
+    { "id": "parse_step", "type": "FUNCTION", "label": "Parse Release Output",
+      "config": { "function_name": "parse_release_output",
+        "input_mapping": {
+          "raw_answer": { "type": "expression", "value": "release_step.answer" }
+        } } },
+    { "id": "write_step", "type": "FUNCTION", "label": "Write Result",
+      "config": { "function_name": "write_release_result",
+        "input_mapping": {
+          "record_id": { "type": "expression", "value": "intake.record_id" },
+          "risk_level": { "type": "expression", "value": "parse_step.risk_level" },
+          "risk_flags": { "type": "expression", "value": "parse_step.risk_flags" },
+          "test_plan": { "type": "expression", "value": "parse_step.test_plan" },
+          "release_notes": { "type": "expression", "value": "parse_step.release_notes" }
+        } } },
+    { "id": "end", "type": "END", "label": "Done" }
+  ],
+  "edges": [
+    { "id": "e1", "source": "intake", "target": "release_step" },
+    { "id": "e2", "source": "release_step", "target": "parse_step" },
+    { "id": "e3", "source": "parse_step", "target": "write_step" },
+    { "id": "e4", "source": "write_step", "target": "end" }
+  ],
+  "visibility": "POD"
+}

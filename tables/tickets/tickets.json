@@ -1,0 +1,21 @@
+{
+  "name": "tickets",
+  "primary_key_column": "id",
+  "enable_rls": false,
+  "visibility": "POD",
+  "columns": [
+    { "name": "customer", "type": "TEXT", "required": true, "max_length": 200 },
+    { "name": "channel", "type": "ENUM", "required": true, "default": "email",
+      "options": ["email", "form", "slack"] },
+    { "name": "subject", "type": "TEXT", "required": true, "max_length": 240 },
+    { "name": "body", "type": "TEXT", "required": true },
+    { "name": "status", "type": "ENUM", "required": true, "default": "new",
+      "options": ["new", "drafted", "escalated", "resolved"] },
+    { "name": "draft_reply", "type": "TEXT", "required": false },
+    { "name": "escalated", "type": "BOOLEAN", "required": false, "default": false },
+    { "name": "escalation_reason", "type": "TEXT", "required": false },
+    { "name": "related_issue_id", "type": "UUID", "required": false,
+      "foreign_key": { "references": "issues.id" } }
+  ],
+  "config": {}
+}

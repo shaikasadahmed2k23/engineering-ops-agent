@@ -1,0 +1,11 @@
+{
+  "name": "write_triage_result",
+  "description": "Writes a triage agent's decision (severity, priority, repro steps, duplicate status) back to the issues table.",
+  "type": "API",
+  "visibility": "POD",
+  "code": { "$file": "code.py" },
+  "permissions": { "grants": [
+    { "resource_type": "datastore_table", "resource_name": "issues",
+      "permission_ids": ["datastore.table.read", "datastore.record.read", "datastore.record.write"] }
+  ] }
+}

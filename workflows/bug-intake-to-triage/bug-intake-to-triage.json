@@ -1,0 +1,45 @@
+{
+  "name": "bug-intake-to-triage",
+  "description": "On a new issue, runs the triage agent, parses its JSON answer, then writes the result back to the issues table.",
+  "start": { "type": "MANUAL" },
+  "nodes": [
+    { "id": "intake", "type": "FORM", "label": "Intake",
+      "config": { "input_schema": {
+        "type": "object",
+        "properties": {
+          "record_id": { "type": "string" },
+          "title": { "type": "string" },
+          "description": { "type": "string" }
+        },
+        "required": ["record_id", "title", "description"] } } },
+    { "id": "triage_step", "type": "AGENT", "label": "Triage",
+      "config": { "agent_name": "triage",
+        "input_mapping": {
+          "title": { "type": "expression", "value": "intake.title" },
+          "description": { "type": "expression", "value": "intake.description" }
+        } } },
+    { "id": "parse_step", "type": "FUNCTION", "label": "Parse Triage Output",
+      "config": { "function_name": "parse_triage_output",
+        "input_mapping": {
+          "raw_answer": { "type": "expression", "value": "triage_step.answer" }
+        } } },
+    { "id": "write_step", "type": "FUNCTION", "label": "Write Result",
+      "config": { "function_name": "write_triage_result",
+        "input_mapping": {
+          "record_id": { "type": "expression", "value": "intake.record_id" },
+          "is_duplicate": { "type": "expression", "value": "parse_step.is_duplicate" },
+          "duplicate_of_id": { "type": "expression", "value": "parse_step.duplicate_of_id" },
+          "severity": { "type": "expression", "value": "parse_step.severity" },
+          "priority": { "type": "expression", "value": "parse_step.priority" },
+          "repro_steps": { "type": "expression", "value": "parse_step.repro_steps" }
+        } } },
+    { "id": "end", "type": "END", "label": "Done" }
+  ],
+  "edges": [
+    { "id": "e1", "source": "intake", "target": "triage_step" },
+    { "id": "e2", "source": "triage_step", "target": "parse_step" },
+    { "id": "e3", "source": "parse_step", "target": "write_step" },
+    { "id": "e4", "source": "write_step", "target": "end" }
+  ],
+  "visibility": "POD"
+}

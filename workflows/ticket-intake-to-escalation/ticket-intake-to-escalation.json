@@ -1,0 +1,46 @@
+{
+  "name": "ticket-intake-to-escalation",
+  "description": "On a new support ticket, runs the support agent to draft a reply or escalate, parses its JSON answer, then writes the result back to the tickets table.",
+  "start": { "type": "MANUAL" },
+  "nodes": [
+    { "id": "intake", "type": "FORM", "label": "Intake",
+      "config": { "input_schema": {
+        "type": "object",
+        "properties": {
+          "record_id": { "type": "string" },
+          "subject": { "type": "string" },
+          "body": { "type": "string" }
+        },
+        "required": ["record_id", "subject", "body"] } } },
+    { "id": "support_step", "type": "AGENT", "label": "Support Triage",
+      "config": { "agent_name": "support",
+        "input_mapping": {
+          "subject": { "type": "expression", "value": "intake.subject" },
+          "body": { "type": "expression", "value": "intake.body" }
+        } } },
+    { "id": "parse_step", "type": "FUNCTION", "label": "Parse Support Output",
+      "config": { "function_name": "parse_support_output",
+        "input_mapping": {
+          "raw_answer": { "type": "expression", "value": "support_step.answer" }
+        } } },
+    { "id": "write_step", "type": "FUNCTION", "label": "Write Result",
+      "config": { "function_name": "write_support_result",
+        "input_mapping": {
+          "record_id": { "type": "expression", "value": "intake.record_id" },
+          "subject": { "type": "expression", "value": "intake.subject" },
+          "body": { "type": "expression", "value": "intake.body" },
+          "escalate": { "type": "expression", "value": "parse_step.escalate" },
+          "escalation_reason": { "type": "expression", "value": "parse_step.escalation_reason" },
+          "draft_reply": { "type": "expression", "value": "parse_step.draft_reply" },
+          "is_bug_report": { "type": "expression", "value": "parse_step.is_bug_report" }
+        } } },
+    { "id": "end", "type": "END", "label": "Done" }
+  ],
+  "edges": [
+    { "id": "e1", "source": "intake", "target": "support_step" },
+    { "id": "e2", "source": "support_step", "target": "parse_step" },
+    { "id": "e3", "source": "parse_step", "target": "write_step" },
+    { "id": "e4", "source": "write_step", "target": "end" }
+  ],
+  "visibility": "POD"
+}

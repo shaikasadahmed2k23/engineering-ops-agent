@@ -1,0 +1,8 @@
+{
+  "name": "triage",
+  "description": "Reasons about a single bug report and returns a structured triage decision as JSON. Does not write to any table directly.",
+  "instruction": { "$file": "instruction.md" },
+  "toolsets": ["POD"],
+  "visibility": "POD",
+  "permissions": { "grants": [] }
+}
