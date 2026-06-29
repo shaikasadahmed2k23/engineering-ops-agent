@@ -1,5 +1,12 @@
 # Engineering Ops Agent
 
+![Lemma SDK](https://img.shields.io/badge/Lemma-SDK-c9a227)
+![Groq](https://img.shields.io/badge/Model-Groq%20Llama%203.3-orange)
+![Docker](https://img.shields.io/badge/Docker-self--hosted-2496ED)
+![Python](https://img.shields.io/badge/Python-3.x-3776AB)
+![Status](https://img.shields.io/badge/Status-Hackathon%20Build-success)
+
+
 Built for the **Gappy AI x Lemma Hackathon** (June 2026) - one pod, three
 connected AI-powered workflows on **Lemma SDK**, covering three of the
 hackathon's curated problem statements at once:
@@ -86,3 +93,13 @@ worked around) and environment notes for local Docker/WSL setups.
 - **Groq** (`llama-3.3-70b-versatile`) - model backend, via Lemma's
   OpenAI-compatible runtime profile
 - Local self-hosted Lemma stack (Docker, WSL2)
+
+## Screenshots
+
+**Live dashboard** - real-time status across all three workflows:
+
+![Dashboard overview](./screenshots/dashboard-overview.png)
+
+**Workflow run** - the support agent escalating a ticket and automatically creating a linked issue:
+
+![Workflow terminal output](./screenshots/terminal-workflow-run.png)
