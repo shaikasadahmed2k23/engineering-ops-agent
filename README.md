@@ -7,6 +7,8 @@
 ![Status](https://img.shields.io/badge/Status-Hackathon%20Build-success)
 
 
+**Live Dashboard:** https://engineering-ops-dashboard.apps.lemma.work
+
 Built for the **Gappy AI x Lemma Hackathon** (June 2026) - one pod, three
 connected AI-powered workflows on **Lemma SDK**, covering three of the
 hackathon's curated problem statements at once:
